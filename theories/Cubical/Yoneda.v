@@ -83,4 +83,8 @@ intros H%le2.
 exfalso.
 Admitted.
 
+Theorem le_dec_prop : forall m n (H : S m <= S n) G, le_dec (⇓ H) = right (G : m <= n).
+  intros.
+Admitted.
+
 End LeYoneda.
