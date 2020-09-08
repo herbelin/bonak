@@ -1,6 +1,6 @@
 Require Import Interface.
 
-Module LeSPropRec <: Le.
+Module LeSPropRec.
 
 Inductive sFalse : SProp :=.
 Inductive sTrue : SProp := sI.
