@@ -77,7 +77,7 @@ Fixpoint cubical {n : nat} : Cubical :=
     cohcube _ _ _ _ Hn' _ _ _ _ _ _ _ _ _ := ltac:(apply (le_discr Hn'));
     |}
   | S _ => let cn := cubical (n := n) in
-  let aux {n'} (H : n' <= S n) := match H with
+  let aux {n'} (H : n' <= S n) := match H return Type with
   | le_refl _ => { D : cn.(csp) _ & cn.(box) _ D -> Type@{l} }
   | le_S_up _ => cn.(csp) _
   end in

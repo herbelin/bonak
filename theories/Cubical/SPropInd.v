@@ -36,25 +36,13 @@ Definition le_S_down {p n} (Hp : S p <= n) : p <= n := le_adjust (↑ Hp).
 
 Notation "⇓ p" := (le_S_down p) (at level 40).
 
-Theorem le_trans_assoc {n m p q} (Hnm : n <= m) (Hmp : m <= p) (Hpq : p <= q) :
-  Hnm ↕ (Hmp ↕ Hpq) = (Hnm ↕ Hmp) ↕ Hpq.
-Proof.
-reflexivity.
-Abort.
-
-Theorem le_trans_comm {n m p} (Hnm : n <= m) (Hmp : m <= p) :
-  (Hnm ↕ ↑ Hmp) = ↑ (Hnm ↕ Hmp).
-Proof.
-reflexivity.
-Abort.
-
-Inductive SFalse : SProp :=.
-Inductive STrue : SProp := SI.
+Inductive sFalse : SProp :=.
+Inductive sTrue : SProp := SI.
 
 Theorem le_discr {n} (H : S n <= 0) {A:Type} : A.
 Proof.
-apply SFalse_rect.
-change (match 0 with 0 => SFalse | S _ => STrue end).
+apply sFalse_rect.
+change (match 0 with 0 => sFalse | S _ => sTrue end).
 induction H; exact SI.
 Defined.
 
