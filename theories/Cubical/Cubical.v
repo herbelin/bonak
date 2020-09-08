@@ -60,7 +60,6 @@ Record Cubical {n : nat} :=
 
 Notation "l '.1'" := (projT1 l) (at level 40).
 Notation "l '.2'" := (projT2 l) (at level 40).
-Notation "( x ; y )" := (existT _ x y) (at level 0, x at level 200).
 
 Fixpoint cubical {n : nat} : Cubical :=
   match n with
@@ -79,20 +78,20 @@ Fixpoint cubical {n : nat} : Cubical :=
     |}
   | S _ => let cn := cubical (n := n) in
   let aux {n'} (H : n' <= S n) := match le_dec H with
-  | left _ => ( true; { D : cn.(csp) _ & cn.(box) _ D -> Type@{l} } )
-  | right _ => ( false; cn.(csp) _ )
+  | left _ => ( true, { D : cn.(csp) _ & cn.(box) _ D -> Type@{l} } )
+  | right _ => ( false, cn.(csp) _ )
   end in
   {|
     csp n' Hn' := match aux Hn' with
-    | (_; D) => D
+    | (_, D) => fun D => D
     end;
     hd n' Hn' := match aux Hn' with
-    | (true; D) => D.1 (* D.1 : csp (_ : n <= n) *)
-    | (false; D) => cn.(hd) D (* hd D : csp (_ : n' <= n) *)
+    | (true, D) => fun D => D.1 (* D.1 : csp (_ : n <= n) *)
+    | (false, D) => fun D => cn.(hd) D (* hd D : csp (_ : n' <= n) *)
     end;
     tl {n'} Hn' := match aux Hn' with
-    | (true; D) => D.2
-    | (false; D) => cn.(tl) D
+    | (true, D) => fun D => D.2
+    | (false, D) => fun D => cn.(tl) D
     end;
     layer n' p Hn' Hp D d := (cn.(cube) (tl D)
       (cn.(subbox) L Hp d) * cube cn (cn.(tl) D) (cn.(subbox) R Hp d))%type
