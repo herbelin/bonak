@@ -83,7 +83,7 @@ Fixpoint cubical {n : nat} : Cubical :=
   end in
   {|
     csp n' Hn' := match aux Hn' with
-    | (_, D) => fun D => D
+    | (_, D) => D
     end;
     hd n' Hn' := match aux Hn' with
     | (true, D) => fun D => D.1 (* D.1 : csp (_ : n <= n) *)
