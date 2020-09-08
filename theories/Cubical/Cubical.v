@@ -1,7 +1,7 @@
 From Coq Require Import Arith.
 Import Logic.EqNotations.
-Require Import Yoneda.
-Import LeYoneda.
+Require Import SPropInd.
+Import LeSPropInd.
 
 Section Cubical.
 Universe l'.
