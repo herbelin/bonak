@@ -1,6 +1,6 @@
 Require Import Interface.
 
-Module LeSPropInd <: Le.
+Module LeSPropInd.
 
 Inductive le' (n : nat) : nat -> SProp :=
   | le_refl : n <= n
@@ -47,5 +47,15 @@ Theorem le_trans_comm {n m p} (Hnm : n <= m) (Hmp : m <= p) :
 Proof.
 reflexivity.
 Abort.
+
+Inductive SFalse : SProp :=.
+Inductive STrue : SProp := SI.
+
+Theorem le_discr {n} (H : S n <= 0) : False.
+Proof.
+apply SFalse_ind.
+change (match 0 with 0 => SFalse | S _ => STrue end).
+induction H; exact SI.
+Defined.
 
 End LeSPropInd.
