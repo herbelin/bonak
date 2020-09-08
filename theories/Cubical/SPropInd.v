@@ -51,9 +51,9 @@ Abort.
 Inductive SFalse : SProp :=.
 Inductive STrue : SProp := SI.
 
-Theorem le_discr {n} (H : S n <= 0) : False.
+Theorem le_discr {n} (H : S n <= 0) {A:Type} : A.
 Proof.
-apply SFalse_ind.
+apply SFalse_rect.
 change (match 0 with 0 => SFalse | S _ => STrue end).
 induction H; exact SI.
 Defined.
