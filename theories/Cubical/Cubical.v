@@ -78,21 +78,23 @@ Fixpoint cubical {n : nat} : Cubical :=
     |}
   | S _ => let cn := cubical (n := n) in
   let aux {n'} (H : n' <= S n) := match le_dec H with
-  | left _ => ( true, { D : cn.(csp) _ & cn.(box) _ D -> Type@{l} } )
-  | right _ => ( false, cn.(csp) _ )
+  | left _ => ( tt, { D : cn.(csp) _ & cn.(box) _ D -> Type@{l} } )
+  | right _ => ( _, cn.(csp) _ )
   end in
   {|
-    csp n' Hn' := snd (aux Hn');
-    hd n' Hn' := match aux Hn' return _ -> cn.(csp) _ with
-    | (true, D) => fun D => D.1 (* D.1 : csp (_ : n <= n) *)
-    | (false, D) => fun D => cn.(hd) D (* hd D : csp (_ : n' <= n) *)
-    (* matched D : { x : csp _ _ & f x } *)
+    (* Hn' : S n' <= S n *)
+    csp _ Hn' := snd (aux Hn');
+    hd _ Hn' := match aux Hn' return _ -> cn.(csp) _ with
+    | (tt, D) => fun D => D.1 (* case: S n' = S n *)
+    | (_, D) => fun D => cn.(hd) D (* case: S n' <= n *)
+    (* unif: snd (aux (⇓ Hn')) and cn.(csp) ?f(aux Hn') *)
+    (* unif: cn.(csp) (⇓ Hn') and cn.(csp) ?f(aux Hn') *)
     end;
-    tl {n'} Hn' := match aux Hn' return _ -> cn.(box) _ _ -> Type@{l} with
-    | (true, D) => fun D => D.2
-    | (false, D) => fun D => cn.(tl) D
+    tl _ Hn' := match aux Hn' return _ -> cn.(box) _ _ -> Type@{l} with
+    | (tt, D) => fun D => D.2
+    | (_, D) => fun D => cn.(tl) D
     end;
-    layer n' p Hn' Hp D d := (cn.(cube) (tl D)
+    layer _ p Hn' Hp D d := (cn.(cube) (tl D)
       (cn.(subbox) L Hp d) * cube cn (cn.(tl) D) (cn.(subbox) R Hp d))%type
   |}
 end.
